@@ -7,6 +7,7 @@ import plantsData from '@/data/plants.json';
 import mutationsData from '@/data/mutations.json';
 import { Plant, Mutation, CalculationResult, SavedPlan } from '@/types';
 import { calculate, formatCurrency, formatTime, getTopPlantsByROI, getTopPlantsByProfitPerHour } from '@/lib/calculator';
+import { getPlans, savePlan, trackCalculation, trackPlanSaved } from '@/lib/storage';
 
 const PLANTS = plantsData.plants as Plant[];
 const MUTATIONS = mutationsData.mutations as Mutation[];
@@ -44,13 +45,19 @@ function CalculatorContent() {
     }
   }, [searchParams]);
 
-  // Load saved plans from localStorage
+  // Load saved plans from localStorage (using storage.ts)
   useEffect(() => {
-    const saved = localStorage.getItem('garden-plans');
-    if (saved) {
-      setSavedPlans(JSON.parse(saved));
-    }
+    const plans = getPlans();
+    setSavedPlans(plans);
   }, []);
+
+  // Track calculation when result changes (with debounce)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      trackCalculation(selectedPlant.name, result.roi);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, [selectedPlant, result.roi]);
 
   // Calculate result
   const result = useMemo(() => {
@@ -122,22 +129,22 @@ function CalculatorContent() {
     }
   };
 
-  // Save plan
-  const savePlan = () => {
-    const newPlan: SavedPlan = {
-      id: Date.now().toString(),
+  // Save plan (using storage.ts for consistent key)
+  const handleSavePlan = () => {
+    const newPlan = savePlan({
       name: `${selectedPlant.name} - ${selectedStage}`,
       plant: selectedPlant,
       stage: selectedStage,
       mutations: selectedMutations,
       weight,
       result,
-      createdAt: new Date().toISOString()
-    };
+    });
     
-    const updatedPlans = [...savedPlans, newPlan];
-    setSavedPlans(updatedPlans);
-    localStorage.setItem('garden-plans', JSON.stringify(updatedPlans));
+    // Update local state
+    setSavedPlans(prev => [newPlan, ...prev]);
+    
+    // Track achievement
+    trackPlanSaved();
     
     setShowSaveSuccess(true);
     setTimeout(() => setShowSaveSuccess(false), 2000);
@@ -309,7 +316,7 @@ function CalculatorContent() {
                   </div>
                   
                   <button
-                    onClick={savePlan}
+                    onClick={handleSavePlan}
                     className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
                       showSaveSuccess 
                         ? 'bg-accent-green text-background' 

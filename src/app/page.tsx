@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Sprout, DollarSign, Clock, TrendingUp, ArrowRight, ChevronDown, Save, Star, Leaf } from 'lucide-react';
 import plantsData from '@/data/plants.json';
 import { Plant } from '@/types';
-import { formatCurrency, formatTime, getRecommendedPlants } from '@/lib/calculator';
+import { formatCurrency, formatTime, getRecommendedPlants, GoalType } from '@/lib/calculator';
 
 const PLANTS = plantsData.plants as Plant[];
 
@@ -15,7 +15,7 @@ export default function HomePage() {
   const [goal, setGoal] = useState<'profit-per-hour' | 'roi' | 'total-profit'>('profit-per-hour');
   const [showResults, setShowResults] = useState(false);
 
-  const recommendations = getRecommendedPlants(PLANTS, budget, playtimeHours * 3600);
+  const recommendations = getRecommendedPlants(PLANTS, budget, playtimeHours * 3600, goal);
 
   const getPlantStats = (plant: Plant) => {
     const lushProfit = plant.baseValue * 1.5 - plant.cost;

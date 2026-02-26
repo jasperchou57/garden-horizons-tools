@@ -136,19 +136,37 @@ export function getTopPlantsByProfitPerHour(plants: Plant[], topN: number = 10):
     .map(p => p.plant);
 }
 
+export type GoalType = 'profit-per-hour' | 'roi' | 'total-profit';
+
 export function getRecommendedPlants(
   plants: Plant[],
   budget: number,
-  playtimeSeconds: number
+  playtimeSeconds: number,
+  goal: GoalType = 'total-profit'
 ): Plant[] {
   return plants
     .filter(p => p.cost <= budget)
     .map(plant => {
       const expectedHarvests = Math.floor(playtimeSeconds / plant.growTimeSec);
-      const totalProfit = (plant.baseValue * 1.5 - plant.cost) * expectedHarvests;
-      return { plant, totalProfit, expectedHarvests };
+      const lushProfit = plant.baseValue * 1.5 - plant.cost;
+      const totalProfit = lushProfit * expectedHarvests;
+      const profitPerHour = lushProfit / (plant.growTimeSec / 3600);
+      const roi = (lushProfit / plant.cost) * 100;
+      
+      return { plant, totalProfit, profitPerHour, roi };
     })
-    .sort((a, b) => b.totalProfit - a.totalProfit)
+    .sort((a, b) => {
+      // Sort by goal
+      switch (goal) {
+        case 'profit-per-hour':
+          return b.profitPerHour - a.profitPerHour;
+        case 'roi':
+          return b.roi - a.roi;
+        case 'total-profit':
+        default:
+          return b.totalProfit - a.totalProfit;
+      }
+    })
     .slice(0, 5)
     .map(p => p.plant);
 }

@@ -4,8 +4,21 @@ import { Plant } from '@/types';
 
 const PLANTS = plantsData.plants as Plant[];
 
+// Get base URL from environment or fallback to Vercel preview
+function getBaseUrl(): string {
+  if (process.env.NEXT_PUBLIC_SITE_URL) {
+    return process.env.NEXT_PUBLIC_SITE_URL;
+  }
+  // Vercel automatically sets this for preview/production
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`;
+  }
+  // Fallback for local development
+  return 'http://localhost:3000';
+}
+
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://gardenhorizonstools.com';
+  const baseUrl = getBaseUrl();
   
   const staticPages: MetadataRoute.Sitemap = [
     { url: baseUrl, lastModified: new Date(), changeFrequency: 'daily', priority: 1 },
