@@ -1,0 +1,138 @@
+{
+  "version": "v1.0",
+  "last_updated": "2026-02-25",
+  "mutations": [
+    {
+      "key": "starstruck",
+      "name": "Starstruck",
+      "multiplier": 6.5,
+      "trigger": "Meteor weather",
+      "stackable": true,
+      "description": "Massive boost during meteor showers",
+      "data_source": "community",
+      "last_verified_at": "2026-02-25",
+      "confidence": "B",
+      "notes": ""
+    },
+    {
+      "key": "lush",
+      "name": "Lush",
+      "multiplier": 1.5,
+      "trigger": "Online while growing",
+      "stackable": false,
+      "description": "Bonus when player stays online during growth",
+      "data_source": "self_test",
+      "last_verified_at": "2026-02-25",
+      "confidence": "A",
+      "notes": "50% bonus to final value"
+    },
+    {
+      "key": "golden",
+      "name": "Golden",
+      "multiplier": 3.0,
+      "trigger": "Random chance",
+      "stackable": false,
+      "description": "Rare random mutation",
+      "data_source": "community",
+      "last_verified_at": "2026-02-25",
+      "confidence": "C",
+      "notes": ""
+    },
+    {
+      "key": "rainbow",
+      "name": "Rainbow",
+      "multiplier": 5.0,
+      "trigger": "Random chance",
+      "stackable": false,
+      "description": "Very rare mutation",
+      "data_source": "community",
+      "last_verified_at": "2026-02-25",
+      "confidence": "C",
+      "notes": ""
+    },
+    {
+      "key": "diamond",
+      "name": "Diamond",
+      "multiplier": 10.0,
+      "trigger": "Random chance",
+      "stackable": false,
+      "description": "Extremely rare mutation",
+      "data_source": "community",
+      "last_verified_at": "2026-02-25",
+      "confidence": "C",
+      "notes": ""
+    },
+    {
+      "key": "frozen",
+      "name": "Frozen",
+      "multiplier": 2.0,
+      "trigger": "Winter weather",
+      "stackable": true,
+      "description": "Cold weather bonus",
+      "data_source": "community",
+      "last_verified_at": "2026-02-25",
+      "confidence": "C",
+      "notes": ""
+    },
+    {
+      "key": "blossoming",
+      "name": "Blossoming",
+      "multiplier": 1.8,
+      "trigger": "Spring weather",
+      "stackable": true,
+      "description": "Spring season bonus",
+      "data_source": "community",
+      "last_verified_at": "2026-02-25",
+      "confidence": "C",
+      "notes": ""
+    },
+    {
+      "key": "sun-kissed",
+      "name": "Sun-Kissed",
+      "multiplier": 1.5,
+      "trigger": "Sunny weather",
+      "stackable": true,
+      "description": "Sunny day bonus",
+      "data_source": "community",
+      "last_verified_at": "2026-02-25",
+      "confidence": "C",
+      "notes": ""
+    },
+    {
+      "key": "thunder",
+      "name": "Thunderstruck",
+      "multiplier": 2.5,
+      "trigger": "Thunderstorm",
+      "stackable": true,
+      "description": "Storm weather bonus",
+      "data_source": "community",
+      "last_verified_at": "2026-02-25",
+      "confidence": "C",
+      "notes": ""
+    },
+    {
+      "key": "ancient",
+      "name": "Ancient",
+      "multiplier": 4.0,
+      "trigger": "Rare spawn",
+      "stackable": false,
+      "description": "Ancient plant mutation",
+      "data_source": "community",
+      "last_verified_at": "2026-02-25",
+      "confidence": "C",
+      "notes": ""
+    },
+    {
+      "key": "void",
+      "name": "Void",
+      "multiplier": 8.0,
+      "trigger": "Rare spawn",
+      "stackable": false,
+      "description": "Void dimension mutation",
+      "data_source": "community",
+      "last_verified_at": "2026-02-25",
+      "confidence": "C",
+      "notes": ""
+    }
+  ]
+}

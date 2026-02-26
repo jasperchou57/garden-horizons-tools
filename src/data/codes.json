@@ -1,0 +1,66 @@
+[
+  {
+    "code": "WELCOME2026",
+    "reward": "500 Seeds",
+    "status": "active",
+    "last_verified_at": "2026-02-25",
+    "verified_by": "community",
+    "evidence": ""
+  },
+  {
+    "code": "GARDENING",
+    "reward": "100 Shillings",
+    "status": "active",
+    "last_verified_at": "2026-02-25",
+    "verified_by": "community",
+    "evidence": ""
+  },
+  {
+    "code": "FREESEEDS",
+    "reward": "Rare Seeds Pack",
+    "status": "expired",
+    "last_verified_at": "2026-02-20",
+    "verified_by": "manual",
+    "evidence": ""
+  },
+  {
+    "code": "LUCKYGARDEN",
+    "reward": "200 Shillings",
+    "status": "active",
+    "last_verified_at": "2026-02-25",
+    "verified_by": "community",
+    "evidence": ""
+  },
+  {
+    "code": "SPRINGBLOOM",
+    "reward": "Spring Seeds",
+    "status": "expired",
+    "last_verified_at": "2026-02-15",
+    "verified_by": "manual",
+    "evidence": ""
+  },
+  {
+    "code": "DAWNDIGITAL",
+    "reward": "Exclusive Hat",
+    "status": "active",
+    "last_verified_at": "2026-02-25",
+    "verified_by": "community",
+    "evidence": ""
+  },
+  {
+    "code": "GREEN THUMB",
+    "reward": "500 Shillings",
+    "status": "unknown",
+    "last_verified_at": "2026-02-10",
+    "verified_by": "manual",
+    "evidence": ""
+  },
+  {
+    "code": "HARVEST2026",
+    "reward": "Golden Seeds",
+    "status": "active",
+    "last_verified_at": "2026-02-25",
+    "verified_by": "community",
+    "evidence": ""
+  }
+]
