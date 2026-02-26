@@ -1,16 +1,21 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0f1f0f;
-  --foreground: #f0fdf4;
-  --surface: #1a2e1a;
-  --surface-highlight: #243524;
-  --accent-green: #4ade80;
-  --accent-green-dark: #22c55e;
-  --accent-gold: #fbbf24;
-  --accent-rose: #fb7185;
-  --text-muted: #86efac;
-  --border: #2d4a2d;
+  /* Dark theme - Forge Ore style */
+  --background: #0a0a0f;
+  --foreground: #f5f5f7;
+  --surface: #16161d;
+  --surface-highlight: #1e1e28;
+  --accent-green: #34d399;
+  --accent-green-dark: #10b981;
+  --accent-gold: #f59e0b;
+  --accent-rose: #f43f5e;
+  --text-muted: #9ca3af;
+  --border: #2a2a35;
+  
+  /* Additional colors */
+  --accent-blue: #3b82f6;
+  --accent-purple: #8b5cf6;
 }
 
 @theme inline {
@@ -22,6 +27,8 @@
   --color-accent-green-dark: var(--accent-green-dark);
   --color-accent-gold: var(--accent-gold);
   --color-accent-rose: var(--accent-rose);
+  --color-accent-blue: var(--accent-blue);
+  --color-accent-purple: var(--accent-purple);
   --color-text-muted: var(--text-muted);
   --color-border: var(--border);
   --font-sans: var(--font-geist-sans);

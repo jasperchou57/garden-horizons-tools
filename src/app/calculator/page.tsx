@@ -161,15 +161,12 @@ function CalculatorContent() {
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="container mx-auto px-4 pt-24 pb-12">
-        <div className="max-w-6xl mx-auto space-y-8">
-          {/* Header */}
-          <div className="flex items-center gap-3">
-            <CalcIcon className="w-8 h-8 text-accent-green" />
-            <div>
-              <h1 className="text-3xl font-bold">Profit Calculator</h1>
-              <p className="text-text-muted">Calculate exact profits, ROI, and profit per hour</p>
-            </div>
+      <main className="container mx-auto px-4 pt-20 pb-12">
+        <div className="max-w-6xl mx-auto space-y-6">
+          {/* Header - Clean style */}
+          <div className="text-center py-8">
+            <h1 className="text-3xl font-bold">Profit Calculator</h1>
+            <p className="text-text-muted mt-2">Calculate exact profits, ROI, and profit per hour</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

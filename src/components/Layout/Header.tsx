@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Sprout, Calculator, Leaf, Gift, ChevronRight, Save, HelpCircle } from 'lucide-react';
+import { Sprout, Calculator, Leaf, Gift, Save } from 'lucide-react';
 
 const navItems = [
   { href: '/', label: 'Planner', icon: Sprout },
@@ -11,28 +11,27 @@ const navItems = [
   { href: '/mutations', label: 'Mutations', icon: Leaf },
   { href: '/codes', label: 'Codes', icon: Gift },
   { href: '/plans', label: 'My Plans', icon: Save },
-  { href: '/faq', label: 'FAQ', icon: HelpCircle },
 ];
 
 export default function Header() {
   const pathname = usePathname();
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-surface/95 backdrop-blur-sm border-b border-border">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-14">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-9 h-9 rounded-lg bg-accent-green/20 flex items-center justify-center group-hover:bg-accent-green/30 transition-colors">
-              <Sprout className="w-5 h-5 text-accent-green" />
+            <div className="w-8 h-8 rounded-lg bg-accent-green flex items-center justify-center">
+              <Sprout className="w-4 h-4 text-background" />
             </div>
-            <span className="font-bold text-lg hidden sm:block">
+            <span className="font-bold text-foreground">
               Garden Horizons <span className="text-accent-green">Tools</span>
             </span>
           </Link>
 
-          {/* Navigation */}
-          <nav className="flex items-center gap-1">
+          {/* Navigation - Desktop */}
+          <nav className="hidden md:flex items-center gap-1">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = pathname === item.href || 
@@ -42,18 +41,27 @@ export default function Header() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-all
                     ${isActive 
                       ? 'bg-accent-green/20 text-accent-green' 
-                      : 'text-text-muted hover:text-foreground hover:bg-surface-highlight'
+                      : 'text-text-muted hover:text-foreground'
                     }`}
                 >
                   <Icon className="w-4 h-4" />
-                  <span className="hidden md:inline">{item.label}</span>
+                  {item.label}
                 </Link>
               );
             })}
           </nav>
+
+          {/* Version Info */}
+          <div className="flex items-center gap-2 text-xs text-text-muted">
+            <span className="hidden sm:inline">Data v1.0</span>
+            <span className="hidden sm:inline">•</span>
+            <span>{27} Plants</span>
+            <span>•</span>
+            <span>{11} Mutations</span>
+          </div>
         </div>
       </div>
     </header>
