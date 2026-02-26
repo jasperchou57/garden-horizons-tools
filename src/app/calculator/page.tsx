@@ -81,50 +81,71 @@ function CalculatorContent() {
 
   // Get next best action
   const nextBestAction = useMemo(() => {
-    const actions: { text: string; type: 'lush' | 'mutation' | 'switch' }[] = [];
+    const actions: { text: string; type: 'lush' | 'mutation' | 'switch'; improvement?: number }[] = [];
     
     // Check if can reach lush
     if (selectedStage !== 'lush') {
+      const lushResult = calculate(selectedPlant, 'lush', selectedMutations, weight, includeWeightFactor);
+      const improvement = ((lushResult.profit - result.profit) / result.profit) * 100;
       actions.push({ 
-        text: `Wait for Lush (gain +${((selectedPlant.baseValue * 1.5 - selectedPlant.baseValue * (selectedStage === 'unripe' ? 0.5 : 1)) / (selectedPlant.baseValue * 1.5) * 100).toFixed(0)}% more)`, 
-        type: 'lush' 
+        text: `Wait for Lush (gain +${improvement.toFixed(0)}% more)`, 
+        type: 'lush',
+        improvement
       });
     }
     
-    // Check if there's better ROI plant
+    // Find the best plant to switch to (not just the first one that's better)
     const currentROI = result.roi;
-    const betterPlant = PLANTS.find(p => {
+    const currentProfitPerHour = result.profitPerHour;
+    
+    let bestPlant: Plant | null = null;
+    let bestImprovement = 0;
+    
+    PLANTS.forEach(p => {
+      if (p.slug === selectedPlant.slug) return;
       const pResult = calculate(p, 'lush', selectedMutations, weight, includeWeightFactor);
-      return pResult.roi > currentROI + 10;
+      const roiImprovement = pResult.roi - currentROI;
+      
+      if (roiImprovement > bestImprovement) {
+        bestImprovement = roiImprovement;
+        bestPlant = p;
+      }
     });
     
-    if (betterPlant) {
+    if (bestPlant && bestImprovement > 10) {
       actions.push({ 
-        text: `Switch to ${betterPlant.name} (+${(calculate(betterPlant, 'lush', selectedMutations, weight, includeWeightFactor).roi - currentROI).toFixed(0)}% ROI)`, 
-        type: 'switch' 
+        text: `Switch to ${bestPlant.name} (+${bestImprovement.toFixed(0)}% ROI)`, 
+        type: 'switch',
+        improvement: bestImprovement
       });
     }
     
+    // Sort by improvement and return the best action
+    actions.sort((a, b) => (b.improvement || 0) - (a.improvement || 0));
     return actions[0] || null;
   }, [selectedPlant, selectedStage, selectedMutations, result, weight, includeWeightFactor]);
 
-  // Toggle mutation
+  // Toggle mutation - simplified logic
+  // stackable: can add multiple (toggle on/off)
+  // non-stackable: only 1 allowed (click new = replace old)
   const toggleMutation = (mutation: Mutation) => {
+    const exists = selectedMutations.find(m => m.key === mutation.key);
+    
     if (mutation.stackable) {
-      // Stackable: can add multiple
-      const exists = selectedMutations.find(m => m.key === mutation.key);
+      // Stackable: toggle on/off
       if (exists) {
         setSelectedMutations(prev => prev.filter(m => m.key !== mutation.key));
       } else {
         setSelectedMutations(prev => [...prev, mutation]);
       }
     } else {
-      // Non-stackable: can only have one
-      const exists = selectedMutations.find(m => m.key === mutation.key);
+      // Non-stackable: only 1 allowed, new replaces old
       if (exists) {
         setSelectedMutations(prev => prev.filter(m => m.key !== mutation.key));
       } else {
-        setSelectedMutations(prev => [...prev.filter(m => !MUTATIONS.find(m2 => m2.key === m.key)?.stackable || MUTATIONS.find(m2 => m2.key === m.key)?.stackable === false), mutation]);
+        // Remove any other non-stackable mutations first, then add this one
+        const otherNonStackable = selectedMutations.filter(m => !MUTATIONS.find(m2 => m2.key === m.key)?.stackable);
+        setSelectedMutations([...otherNonStackable, mutation]);
       }
     }
   };
@@ -232,6 +253,9 @@ function CalculatorContent() {
                     </button>
                   ))}
                 </div>
+                <p className="text-xs text-text-muted mt-3">
+                  Base value assumes Ripened (1x). Unripe/Lush applied as multipliers.
+                </p>
               </div>
 
               {/* Mutations */}

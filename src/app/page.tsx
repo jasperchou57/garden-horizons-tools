@@ -2,10 +2,11 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Sprout, Calculator, Leaf, ArrowRight, Star, TrendingUp, Shield, Zap } from 'lucide-react';
+import { Sprout, Calculator, Leaf, ArrowRight, Star, TrendingUp, Shield, Zap, Save } from 'lucide-react';
 import plantsData from '@/data/plants.json';
 import { Plant } from '@/types';
-import { formatCurrency, formatTime, getRecommendedPlants } from '@/lib/calculator';
+import { formatCurrency, formatTime, getRecommendedPlants, calculate } from '@/lib/calculator';
+import { savePlan, trackPlanSaved } from '@/lib/storage';
 
 const PLANTS = plantsData.plants as Plant[];
 
@@ -14,6 +15,7 @@ export default function HomePage() {
   const [playtimeHours, setPlaytimeHours] = useState<number>(2);
   const [goal, setGoal] = useState<'profit-per-hour' | 'roi' | 'total-profit'>('profit-per-hour');
   const [showResults, setShowResults] = useState(false);
+  const [showSaveSuccess, setShowSaveSuccess] = useState(false);
 
   const recommendations = getRecommendedPlants(PLANTS, budget, playtimeHours * 3600, goal);
 
@@ -26,6 +28,27 @@ export default function HomePage() {
 
   const handleGeneratePlan = () => {
     setShowResults(true);
+  };
+
+  // Save top recommendation as a plan
+  const handleSavePlan = () => {
+    if (recommendations.length === 0) return;
+    
+    const topPlant = recommendations[0];
+    const result = calculate(topPlant, 'lush', [], 1, false);
+    
+    savePlan({
+      name: `Planner: ${topPlant.name} (${goal})`,
+      plant: topPlant,
+      stage: 'lush',
+      mutations: [],
+      weight: 1,
+      result,
+    });
+    
+    trackPlanSaved();
+    setShowSaveSuccess(true);
+    setTimeout(() => setShowSaveSuccess(false), 2000);
   };
 
   return (
@@ -191,6 +214,30 @@ export default function HomePage() {
                 );
               })}
             </div>
+
+            {/* Save Plan Button */}
+            {recommendations.length > 0 && (
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+                <button
+                  onClick={handleSavePlan}
+                  className={`w-full sm:w-auto px-6 py-3 rounded-xl font-medium transition-all flex items-center justify-center gap-2 ${
+                    showSaveSuccess 
+                      ? 'bg-accent-green text-background' 
+                      : 'bg-accent-green/20 text-accent-green hover:bg-accent-green/30'
+                  }`}
+                >
+                  <Save className="w-4 h-4" />
+                  {showSaveSuccess ? 'Saved to My Plans!' : 'Save This Plan'}
+                </button>
+                <Link
+                  href="/calculator"
+                  className="w-full sm:w-auto px-6 py-3 rounded-xl bg-surface border border-border text-foreground font-medium hover:border-accent-green/50 transition-all flex items-center justify-center gap-2"
+                >
+                  <Calculator className="w-4 h-4" />
+                  Customize in Calculator
+                </Link>
+              </div>
+            )}
           </div>
         )}
 
