@@ -16,9 +16,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Garden Horizons Tools | Calculator & Plant Database",
-  description: "Calculate profits, ROI, and profit/hour for Garden Horizons Roblox. Plant database, mutations, and redeem codes.",
-  keywords: ["Garden Horizons", "Roblox", "calculator", "garden", "plants", "mutations"],
+  title: "Garden Horizons Calculator & Planting Planner | ROI, Profit/Hour, Mutations",
+  description: "Plan what to plant in Garden Horizons with a budget-aware planner. Calculate ROI, profit/hour, mutation stacking, and avoid losing money by harvesting too early.",
+  keywords: ["Garden Horizons", "Roblox", "calculator", "garden", "plants", "mutations", "ROI", "profit calculator"],
 };
 
 export default function RootLayout({

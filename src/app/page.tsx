@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Sprout, Calculator, Leaf, ArrowRight, Star, TrendingUp, Shield, Zap, Save } from 'lucide-react';
+import { Sprout, Calculator, Leaf, ArrowRight, Star, TrendingUp, Shield, Zap, Save, Gift, Sparkles, HelpCircle } from 'lucide-react';
 import plantsData from '@/data/plants.json';
 import { Plant } from '@/types';
 import { formatCurrency, formatTime, getRecommendedPlants, calculate } from '@/lib/calculator';
@@ -71,12 +71,11 @@ export default function HomePage() {
           </div>
           
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
-            Smart <span className="text-accent-green">Planting Planner</span>
+            Garden Horizons <span className="text-accent-green">Calculator</span> & Smart Planting Planner
           </h1>
           
           <p className="text-lg text-text-muted max-w-2xl mx-auto">
-            Calculate exact profits, ROI, and optimize your planting strategy with real game data. 
-            Stop guessing — start maximizing your earnings.
+            Use this Garden Horizons calculator to compare ROI, profit per hour, and harvest timing. Start with the planting planner: enter your budget and online time to get a recommended crop plan. Then refine it with mutations and ripening stages—so you don&apos;t lose money by harvesting too early.
           </p>
 
           {/* CTA Buttons */}
@@ -309,9 +308,76 @@ export default function HomePage() {
           </div>
         )}
 
-        {/* Features Grid */}
+        {/* Quick Tools Section */}
         <div className="max-w-4xl mx-auto mt-16">
-          <h2 className="text-2xl font-bold text-center mb-8">Why Garden Horizons Tools?</h2>
+          <h2 className="text-2xl font-bold text-center mb-8">Quick Tools for Garden Horizons</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Link 
+              href="/calculator"
+              className="bg-surface border border-border rounded-xl p-4 hover:border-accent-green/50 transition-all group"
+            >
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-lg bg-accent-green/20 flex items-center justify-center shrink-0 group-hover:bg-accent-green/30 transition-colors">
+                  <Calculator className="w-5 h-5 text-accent-green" />
+                </div>
+                <div>
+                  <h3 className="font-bold mb-1 group-hover:text-accent-green transition-colors">Garden Horizons Calculator</h3>
+                  <p className="text-sm text-text-muted">Calculate ROI, profit/hour, ripening multipliers and mutation stacking.</p>
+                </div>
+              </div>
+            </Link>
+
+            <Link 
+              href="/codes"
+              className="bg-surface border border-border rounded-xl p-4 hover:border-accent-green/50 transition-all group"
+            >
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-lg bg-accent-gold/20 flex items-center justify-center shrink-0 group-hover:bg-accent-gold/30 transition-colors">
+                  <Gift className="w-5 h-5 text-accent-gold" />
+                </div>
+                <div>
+                  <h3 className="font-bold mb-1 group-hover:text-accent-green transition-colors">Garden Horizons Codes</h3>
+                  <p className="text-sm text-text-muted">Latest codes with last verified time and rewards.</p>
+                </div>
+              </div>
+            </Link>
+
+            <Link 
+              href="/plants"
+              className="bg-surface border border-border rounded-xl p-4 hover:border-accent-green/50 transition-all group"
+            >
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-lg bg-accent-blue/20 flex items-center justify-center shrink-0 group-hover:bg-accent-blue/30 transition-colors">
+                  <Leaf className="w-5 h-5 text-accent-blue" />
+                </div>
+                <div>
+                  <h3 className="font-bold mb-1 group-hover:text-accent-green transition-colors">Garden Horizons Wiki</h3>
+                  <p className="text-sm text-text-muted">All plants with cost, grow time, and profit stats.</p>
+                </div>
+              </div>
+            </Link>
+
+            <Link 
+              href="/mutations"
+              className="bg-surface border border-border rounded-xl p-4 hover:border-accent-green/50 transition-all group"
+            >
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-lg bg-accent-purple/20 flex items-center justify-center shrink-0 group-hover:bg-accent-purple/30 transition-colors">
+                  <Sparkles className="w-5 h-5 text-accent-purple" />
+                </div>
+                <div>
+                  <h3 className="font-bold mb-1 group-hover:text-accent-green transition-colors">Garden Horizons Mutations</h3>
+                  <p className="text-sm text-text-muted">Mutation multipliers, stacking rules, and triggers.</p>
+                </div>
+              </div>
+            </Link>
+          </div>
+        </div>
+
+        {/* Why This Tool Helps */}
+        <div className="max-w-4xl mx-auto mt-16">
+          <h2 className="text-2xl font-bold text-center mb-8">Why This Tool Helps</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-surface border border-border rounded-xl p-6">
@@ -341,6 +407,61 @@ export default function HomePage() {
               <h3 className="font-bold mb-2">100% Free</h3>
               <p className="text-sm text-text-muted">
                 No signup required. No premium features. Just free tools for players.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* FAQ Section */}
+        <div className="max-w-4xl mx-auto mt-16">
+          <h2 className="text-2xl font-bold text-center mb-8">FAQ</h2>
+          
+          <div className="space-y-4">
+            <div className="bg-surface border border-border rounded-xl p-6">
+              <h3 className="font-bold mb-2 flex items-start gap-2">
+                <HelpCircle className="w-5 h-5 text-accent-green shrink-0 mt-0.5" />
+                How does Garden Horizons mutation stacking work?
+              </h3>
+              <p className="text-sm text-text-muted">
+                Some mutations are stackable (like weather effects) while others are exclusive (like Lush). 
+                In our calculator, you can select multiple stackable mutations to see combined ROI. 
+                <Link href="/mutations" className="text-accent-green hover:underline ml-1">Learn more →</Link>
+              </p>
+            </div>
+
+            <div className="bg-surface border border-border rounded-xl p-6">
+              <h3 className="font-bold mb-2 flex items-start gap-2">
+                <HelpCircle className="w-5 h-5 text-accent-green shrink-0 mt-0.5" />
+                Should I harvest now or wait for Lush?
+              </h3>
+              <p className="text-sm text-text-muted">
+                Lush stage gives 1.5x value multiplier. However, if you&apos;re about to go offline, 
+                it&apos;s better to harvest at ripened (1x) than risk losing the plant entirely. 
+                Use our calculator to compare exact profits: 
+                <Link href="/calculator" className="text-accent-green hover:underline ml-1">Try it now →</Link>
+              </p>
+            </div>
+
+            <div className="bg-surface border border-border rounded-xl p-6">
+              <h3 className="font-bold mb-2 flex items-start gap-2">
+                <HelpCircle className="w-5 h-5 text-accent-green shrink-0 mt-0.5" />
+                Do plants become Lush while I&apos;m offline?
+              </h3>
+              <p className="text-sm text-text-muted">
+                No, the Lush mutation only triggers when you stay online during the entire growth period. 
+                This is why our calculator shows &quot;Assume Lush&quot; as an optional strategy. 
+                <Link href="/plants" className="text-accent-green hover:underline ml-1">View plant data →</Link>
+              </p>
+            </div>
+
+            <div className="bg-surface border border-border rounded-xl p-6">
+              <h3 className="font-bold mb-2 flex items-start gap-2">
+                <HelpCircle className="w-5 h-5 text-accent-green shrink-0 mt-0.5" />
+                What&apos;s the best crop for my budget?
+              </h3>
+              <p className="text-sm text-text-muted">
+                It depends on your goal! Use our Smart Planting Planner above to enter your budget 
+                and playtime, then choose between maximizing ROI, profit per hour, or total profit.
               </p>
             </div>
           </div>
