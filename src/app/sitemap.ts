@@ -26,6 +26,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/plants`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
     { url: `${baseUrl}/mutations`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
     { url: `${baseUrl}/codes`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
+    { url: `${baseUrl}/plans`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.5 },
+    { url: `${baseUrl}/privacy`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.3 },
+    { url: `${baseUrl}/terms`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.3 },
+    { url: `${baseUrl}/disclaimer`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.3 },
+    { url: `${baseUrl}/support`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.3 },
+    { url: `${baseUrl}/cookies`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.3 },
+    { url: `${baseUrl}/faq`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
   ];
 
   const plantPages: MetadataRoute.Sitemap = PLANTS.map((plant) => ({
