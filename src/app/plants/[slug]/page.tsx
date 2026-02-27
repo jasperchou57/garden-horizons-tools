@@ -1,8 +1,10 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import { Metadata } from 'next';
 import { ArrowLeft, Calculator, Leaf, Clock, Scale, RefreshCw, Info } from 'lucide-react';
 import plantsData from '@/data/plants.json';
 import { Plant } from '@/types';
+import { getSiteUrl } from '@/lib/site';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -15,18 +17,29 @@ export async function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const PLANTS = plantsData.plants as Plant[];
   const plant = PLANTS.find((p) => p.slug === slug);
+  const siteUrl = getSiteUrl();
   
   if (!plant) {
     return { title: 'Plant Not Found' };
   }
   
   return {
-    title: `${plant.name} - Garden Horizons Tools`,
-    description: `${plant.name} stats, ROI, and profit calculator. Cost: ${plant.cost}, Base Value: ${plant.baseValue}, Grow Time: ${plant.growTimeSec}s`,
+    title: `${plant.name} Value & ROI - Garden Horizons Calculator`,
+    description: `Cost, grow time, profit/hour, ROI, and lush-stage sell price for ${plant.name}. Verified data + calculator link.`,
+    alternates: {
+      canonical: `${siteUrl}/plants/${slug}`,
+    },
+    openGraph: {
+      title: `${plant.name} Value & ROI - Garden Horizons Calculator`,
+      description: `Cost: ${plant.cost} coins, Base Value: ${plant.baseValue} coins, Grow Time: ${plant.growTimeSec}s. Calculate ROI and profit.`,
+      url: `${siteUrl}/plants/${slug}`,
+      siteName: 'Garden Horizons Tools',
+      type: 'article',
+    },
   };
 }
 
@@ -45,9 +58,9 @@ export default async function PlantPage({ params }: Props) {
   const profitPerHour = lushProfit / (plant.growTimeSec / 3600);
   
   const formatCurrency = (value: number) => {
-    if (value >= 1000000) return `$${(value / 1000000).toFixed(2)}M`;
-    if (value >= 1000) return `$${(value / 1000).toFixed(1)}K`;
-    return `$${value.toFixed(2)}`;
+    if (value >= 1000000) return `${(value / 1000000).toFixed(2)}M coins`;
+    if (value >= 1000) return `${(value / 1000).toFixed(1)}K coins`;
+    return `${value.toFixed(2)} coins`;
   };
   
   const formatTime = (seconds: number) => {

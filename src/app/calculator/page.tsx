@@ -2,15 +2,35 @@
 
 import { useState, useEffect, useMemo, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { Metadata } from 'next';
 import { Calculator as CalcIcon, Save, ArrowRight, TrendingUp, AlertTriangle, CheckCircle, Star, ArrowDown, ChevronDown, CloudRain, Sun, Cloud, Leaf, Zap, Gem, Sparkles } from 'lucide-react';
 import plantsData from '@/data/plants.json';
 import mutationsData from '@/data/mutations.json';
 import { Plant, Mutation, CalculationResult, SavedPlan } from '@/types';
 import { calculate, formatCurrency, formatTime, getTopPlantsByROI, getTopPlantsByProfitPerHour } from '@/lib/calculator';
 import { getPlans, savePlan, trackCalculation, trackPlanSaved } from '@/lib/storage';
+import { getSiteUrl } from '@/lib/site';
 
 const PLANTS = plantsData.plants as Plant[];
 const MUTATIONS = mutationsData.mutations as Mutation[];
+
+export function generateMetadata(): Metadata {
+  const siteUrl = getSiteUrl();
+  return {
+    title: 'Calculator | Garden Horizons Calculator',
+    description: 'Calculate ROI, profit/hour for Garden Horizons. Compare plants, mutations, and harvest timing to maximize your profits.',
+    alternates: {
+      canonical: `${siteUrl}/calculator`,
+    },
+    openGraph: {
+      title: 'Garden Horizons Calculator',
+      description: 'Calculate ROI, profit/hour for Garden Horizons. Compare plants and mutations.',
+      url: `${siteUrl}/calculator`,
+      siteName: 'Garden Horizons Tools',
+      type: 'website',
+    },
+  };
+}
 
 export default function CalculatorPage() {
   return (
