@@ -353,8 +353,8 @@ export default function HomeClient({ plants }: HomeClientProps) {
                   <Leaf className="w-5 h-5 text-accent-blue" />
                 </div>
                 <div>
-                  <h3 className="font-bold mb-1 group-hover:text-accent-green transition-colors">Garden Horizons Wiki</h3>
-                  <p className="text-sm text-text-muted">All plants with cost, grow time, and profit stats.</p>
+                  <h3 className="font-bold mb-1 group-hover:text-accent-green transition-colors">Garden Horizons Plants Database</h3>
+                  <p className="text-sm text-text-muted">All plants with cost, grow time, and profit stats. Wiki-style reference.</p>
                 </div>
               </div>
             </Link>
