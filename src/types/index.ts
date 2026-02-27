@@ -27,6 +27,9 @@ export interface Mutation {
   multiplier: number;
   trigger: string;
   stackable: boolean;
+  // Group field for mutual exclusivity - mutations in the same group are mutually exclusive (only 1 allowed)
+  // null means this mutation has no group restrictions
+  group?: string | null;
   description?: string;
   data_source: string;
   last_verified_at: string;

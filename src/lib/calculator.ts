@@ -61,7 +61,8 @@ export function calculate(
 
   const sellPrice = plant.baseValue * stageMultiplier * mutationMultiplier * weightFactor;
   const profit = sellPrice - plant.cost;
-  const roi = (profit / plant.cost) * 100;
+  // Protection: if cost <= 0, set ROI to 0 (avoid Infinity)
+  const roi = plant.cost <= 0 ? 0 : (profit / plant.cost) * 100;
   const profitPerHour = profit * (3600 / plant.growTimeSec);
 
   let grade: 'A' | 'B' | 'C' = 'C';
@@ -93,10 +94,11 @@ export function calculate(
   };
 }
 
-export function formatCurrency(value: number): string {
-  if (value >= 1000000) return `$${(value / 1000000).toFixed(2)}M`;
-  if (value >= 1000) return `$${(value / 1000).toFixed(1)}K`;
-  return `$${value.toFixed(2)}`;
+export function formatCurrency(value: number, includeUnit: boolean = true): string {
+  const unit = includeUnit ? ' coins' : '';
+  if (value >= 1000000) return `${(value / 1000000).toFixed(2)}M${unit}`;
+  if (value >= 1000) return `${(value / 1000).toFixed(1)}K${unit}`;
+  return `${value.toFixed(0)}${unit}`;
 }
 
 export function formatTime(seconds: number): string {
@@ -145,13 +147,14 @@ export function getRecommendedPlants(
   goal: GoalType = 'total-profit'
 ): Plant[] {
   return plants
-    .filter(p => p.cost <= budget)
+    .filter(p => p.cost <= budget && p.cost > 0)
     .map(plant => {
       const expectedHarvests = Math.floor(playtimeSeconds / plant.growTimeSec);
       const lushProfit = plant.baseValue * 1.5 - plant.cost;
       const totalProfit = lushProfit * expectedHarvests;
       const profitPerHour = lushProfit / (plant.growTimeSec / 3600);
-      const roi = (lushProfit / plant.cost) * 100;
+      // Protection: if cost <= 0, set ROI to 0 (avoid Infinity)
+      const roi = plant.cost <= 0 ? 0 : (lushProfit / plant.cost) * 100;
       
       return { plant, totalProfit, profitPerHour, roi };
     })

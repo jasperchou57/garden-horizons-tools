@@ -16,6 +16,8 @@
   /* Additional colors */
   --accent-blue: #3b82f6;
   --accent-purple: #8b5cf6;
+  --accent-amber: #f59e0b;
+  --accent-pink: #ec4899;
 }
 
 @theme inline {
@@ -29,6 +31,8 @@
   --color-accent-rose: var(--accent-rose);
   --color-accent-blue: var(--accent-blue);
   --color-accent-purple: var(--accent-purple);
+  --color-accent-amber: var(--accent-amber);
+  --color-accent-pink: var(--accent-pink);
   --color-text-muted: var(--text-muted);
   --color-border: var(--border);
   --font-sans: var(--font-geist-sans);

@@ -1,10 +1,28 @@
 'use client';
 
-import { Sparkles, ArrowRight, Info } from 'lucide-react';
+import { Sparkles, ArrowRight, Info, CloudRain, Sun, Cloud, Leaf, Zap, Gem, Star } from 'lucide-react';
 import mutationsData from '@/data/mutations.json';
 import { Mutation } from '@/types';
 
 const MUTATIONS = mutationsData.mutations as Mutation[];
+
+// Get icon based on mutation key and group
+const getMutationIcon = (mutation: Mutation) => {
+  if (mutation.key === 'lush') return <Leaf className="w-6 h-6 text-accent-green" />;
+  if (mutation.key === 'golden') return <Gem className="w-6 h-6 text-accent-gold" />;
+  if (mutation.key === 'rainbow') return <Sparkles className="w-6 h-6 text-accent-purple" />;
+  if (mutation.key === 'diamond') return <Gem className="w-6 h-6 text-accent-blue" />;
+  if (mutation.key === 'ancient') return <Star className="w-6 h-6 text-accent-amber" />;
+  if (mutation.key === 'void') return <Zap className="w-6 h-6 text-accent-purple" />;
+  if (mutation.key === 'starstruck') return <CloudRain className="w-6 h-6 text-accent-blue" />;
+  if (mutation.key === 'sun-kissed') return <Sun className="w-6 h-6 text-accent-gold" />;
+  if (mutation.key === 'thunder') return <Cloud className="w-6 h-6 text-accent-purple" />;
+  if (mutation.key === 'frozen') return <CloudRain className="w-6 h-6 text-accent-blue" />;
+  if (mutation.key === 'blossoming') return <Sparkles className="w-6 h-6 text-accent-pink" />;
+  if (mutation.group === 'rarity') return <Star className="w-6 h-6 text-accent-gold" />;
+  if (mutation.group === 'weather') return <CloudRain className="w-6 h-6 text-accent-blue" />;
+  return <Sparkles className="w-6 h-6 text-accent-green" />;
+};
 
 export default function MutationsPage() {
   return (
@@ -43,7 +61,7 @@ export default function MutationsPage() {
                 <div className="flex items-start justify-between">
                   <div className="flex items-start gap-4">
                     <div className="w-12 h-12 rounded-xl bg-accent-green/20 flex items-center justify-center">
-                      <span className="text-xl font-bold text-accent-green">x{ mutation.multiplier }</span>
+                      {getMutationIcon(mutation)}
                     </div>
                     <div>
                       <h3 className="font-bold text-lg">{mutation.name}</h3>
@@ -51,6 +69,7 @@ export default function MutationsPage() {
                     </div>
                   </div>
                   <div className="text-right">
+                    <div className="font-mono text-accent-green font-bold text-lg">x{ mutation.multiplier }</div>
                     <span className={`px-3 py-1 rounded-full text-xs font-medium ${
                       mutation.stackable 
                         ? 'bg-accent-green/20 text-accent-green' 

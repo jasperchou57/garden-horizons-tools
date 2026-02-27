@@ -23,7 +23,13 @@ export default function HomePage() {
     const lushProfit = plant.baseValue * 1.5 - plant.cost;
     const roi = ((plant.baseValue * 1.5 - plant.cost) / plant.cost) * 100;
     const profitPerHour = lushProfit / (plant.growTimeSec / 3600);
-    return { lushProfit, roi, profitPerHour };
+    
+    // Calculate for the specific budget and playtime
+    const canBuy = Math.floor(budget / plant.cost);  // How many can buy with budget
+    const rounds = Math.floor((playtimeHours * 3600) / plant.growTimeSec);  // Rounds in playtime
+    const totalProfit = lushProfit * rounds * canBuy;  // Total profit
+    
+    return { lushProfit, roi, profitPerHour, canBuy, rounds, totalProfit };
   };
 
   const handleGeneratePlan = () => {
@@ -37,8 +43,11 @@ export default function HomePage() {
     const topPlant = recommendations[0];
     const result = calculate(topPlant, 'lush', [], 1, false);
     
+    // Map goal to readable label
+    const goalLabel = goal === 'profit-per-hour' ? 'Profit/Hour' : goal === 'roi' ? 'ROI' : 'Total Profit';
+    
     savePlan({
-      name: `Planner: ${topPlant.name} (${goal})`,
+      name: `Planner: ${topPlant.name} (${goalLabel}, Assume Lush)`,
       plant: topPlant,
       stage: 'lush',
       mutations: [],
@@ -149,10 +158,55 @@ export default function HomePage() {
         </div>
 
         {/* Results Section */}
-        {showResults && (
+        {showResults && recommendations.length > 0 && (
           <div className="max-w-4xl mx-auto mt-8 space-y-6">
+            {/* Best Plan Summary Card */}
+            {(() => {
+              const topPlant = recommendations[0];
+              const topStats = getPlantStats(topPlant);
+              const goalLabel = goal === 'profit-per-hour' ? 'Profit/Hour' : goal === 'roi' ? 'ROI' : 'Total Profit';
+              return (
+                <div className="bg-gradient-to-r from-accent-green/20 to-accent-blue/20 border border-accent-green/30 rounded-2xl p-6">
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 rounded-xl bg-accent-green flex items-center justify-center shrink-0">
+                      <Star className="w-6 h-6 text-background fill-background" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-lg font-bold mb-1">Best Plan Recommendation</h3>
+                      <p className="text-text-muted text-sm mb-4">
+                        Based on your budget of <span className="text-accent-green font-mono">{formatCurrency(budget)}</span> and 
+                        playtime of <span className="font-mono">{playtimeHours}h</span>, optimizing for <span className="text-accent-green">{goalLabel}</span>
+                      </p>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                        <div>
+                          <div className="text-2xl font-bold text-accent-green">{topPlant.name}</div>
+                          <div className="text-xs text-text-muted">Selected Plant</div>
+                        </div>
+                        <div>
+                          <div className="text-2xl font-bold">{topStats.canBuy}</div>
+                          <div className="text-xs text-text-muted">Can Buy</div>
+                        </div>
+                        <div>
+                          <div className="text-2xl font-bold">{topStats.rounds}</div>
+                          <div className="text-xs text-text-muted">Rounds</div>
+                        </div>
+                        <div>
+                          <div className="text-2xl font-bold text-accent-green">{formatCurrency(topStats.totalProfit)}</div>
+                          <div className="text-xs text-text-muted">Total Profit</div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-text-muted">
+                        <Zap className="w-4 h-4 text-accent-gold" />
+                        <span>Tip: Stay online until Lush for maximum profit!</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
+
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-bold">Recommended Plants</h2>
+              <h2 className="text-xl font-bold">All Recommended Plants</h2>
               <Link
                 href="/calculator"
                 className="text-accent-green hover:underline text-sm flex items-center gap-1"
@@ -199,7 +253,7 @@ export default function HomePage() {
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
                         <span className="text-text-muted">Profit/Hour</span>
-                        <span className="font-mono">{formatCurrency(stats.profitPerHour)}</span>
+                        <span className="font-mono">{formatCurrency(stats.profitPerHour)}/hr</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-text-muted">ROI</span>
@@ -208,6 +262,20 @@ export default function HomePage() {
                       <div className="flex justify-between">
                         <span className="text-text-muted">Grow Time</span>
                         <span>{formatTime(plant.growTimeSec)}</span>
+                      </div>
+                      <div className="border-t border-border pt-2 mt-2">
+                        <div className="flex justify-between text-xs">
+                          <span className="text-text-muted">Can Buy</span>
+                          <span className="font-mono">{stats.canBuy}</span>
+                        </div>
+                        <div className="flex justify-between text-xs">
+                          <span className="text-text-muted">Rounds</span>
+                          <span className="font-mono">{stats.rounds}</span>
+                        </div>
+                        <div className="flex justify-between text-xs">
+                          <span className="text-text-muted">Total Profit</span>
+                          <span className="font-mono text-accent-green">{formatCurrency(stats.totalProfit)}</span>
+                        </div>
                       </div>
                     </div>
                   </Link>

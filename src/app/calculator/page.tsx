@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { Calculator as CalcIcon, Save, ArrowRight, TrendingUp, AlertTriangle, CheckCircle, Star, ArrowDown, ChevronDown } from 'lucide-react';
+import { Calculator as CalcIcon, Save, ArrowRight, TrendingUp, AlertTriangle, CheckCircle, Star, ArrowDown, ChevronDown, CloudRain, Sun, Cloud, Leaf, Zap, Gem, Sparkles } from 'lucide-react';
 import plantsData from '@/data/plants.json';
 import mutationsData from '@/data/mutations.json';
 import { Plant, Mutation, CalculationResult, SavedPlan } from '@/types';
@@ -23,6 +23,24 @@ export default function CalculatorPage() {
     </Suspense>
   );
 }
+
+// Get icon based on mutation key and group (统一使用 w-6 h-6)
+const getMutationIcon = (mutation: Mutation) => {
+  if (mutation.key === 'lush') return <Leaf className="w-6 h-6 text-accent-green" />;
+  if (mutation.key === 'golden') return <Gem className="w-6 h-6 text-accent-gold" />;
+  if (mutation.key === 'rainbow') return <Sparkles className="w-6 h-6 text-accent-purple" />;
+  if (mutation.key === 'diamond') return <Gem className="w-6 h-6 text-accent-blue" />;
+  if (mutation.key === 'ancient') return <Star className="w-6 h-6 text-accent-amber" />;
+  if (mutation.key === 'void') return <Zap className="w-6 h-6 text-accent-purple" />;
+  if (mutation.key === 'starstruck') return <CloudRain className="w-6 h-6 text-accent-blue" />;
+  if (mutation.key === 'sun-kissed') return <Sun className="w-6 h-6 text-accent-gold" />;
+  if (mutation.key === 'thunder') return <Cloud className="w-6 h-6 text-accent-purple" />;
+  if (mutation.key === 'frozen') return <CloudRain className="w-6 h-6 text-accent-blue" />;
+  if (mutation.key === 'blossoming') return <Sparkles className="w-6 h-6 text-accent-pink" />;
+  if (mutation.group === 'rarity') return <Star className="w-6 h-6 text-accent-gold" />;
+  if (mutation.group === 'weather') return <CloudRain className="w-6 h-6 text-accent-blue" />;
+  return <Sparkles className="w-6 h-6 text-accent-green" />;
+};
 
 function CalculatorContent() {
   const searchParams = useSearchParams();
@@ -51,6 +69,11 @@ function CalculatorContent() {
     setSavedPlans(plans);
   }, []);
 
+  // Calculate result (must be before useEffect that uses it)
+  const result = useMemo(() => {
+    return calculate(selectedPlant, selectedStage, selectedMutations, weight, includeWeightFactor);
+  }, [selectedPlant, selectedStage, selectedMutations, weight, includeWeightFactor]);
+
   // Track calculation when result changes (with debounce)
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -58,11 +81,6 @@ function CalculatorContent() {
     }, 2000);
     return () => clearTimeout(timer);
   }, [selectedPlant, result.roi]);
-
-  // Calculate result
-  const result = useMemo(() => {
-    return calculate(selectedPlant, selectedStage, selectedMutations, weight, includeWeightFactor);
-  }, [selectedPlant, selectedStage, selectedMutations, weight, includeWeightFactor]);
 
   // Get best plants for comparison
   const topByROI = useMemo(() => getTopPlantsByROI(PLANTS, 10), []);
@@ -99,9 +117,9 @@ function CalculatorContent() {
     const currentProfitPerHour = result.profitPerHour;
     
     let bestPlant: Plant | null = null;
-    let bestImprovement = 0;
+    let bestImprovement: number = 0;
     
-    PLANTS.forEach(p => {
+    PLANTS.forEach((p: Plant) => {
       if (p.slug === selectedPlant.slug) return;
       const pResult = calculate(p, 'lush', selectedMutations, weight, includeWeightFactor);
       const roiImprovement = pResult.roi - currentROI;
@@ -112,9 +130,10 @@ function CalculatorContent() {
       }
     });
     
-    if (bestPlant && bestImprovement > 10) {
+    if (bestPlant !== null && bestImprovement > 10) {
+      const plantName = (bestPlant as Plant).name;
       actions.push({ 
-        text: `Switch to ${bestPlant.name} (+${bestImprovement.toFixed(0)}% ROI)`, 
+        text: `Switch to ${plantName} (+${bestImprovement.toFixed(0)}% ROI)`, 
         type: 'switch',
         improvement: bestImprovement
       });
@@ -274,7 +293,10 @@ function CalculatorContent() {
                             : 'bg-background border border-border hover:border-accent-green/30'
                         }`}
                       >
-                        <span>{mutation.name}</span>
+                        <div className="flex items-center gap-2">
+                          {getMutationIcon(mutation)}
+                          <span>{mutation.name}</span>
+                        </div>
                         <span className="font-mono text-accent-green">x{mutation.multiplier}</span>
                       </button>
                     );

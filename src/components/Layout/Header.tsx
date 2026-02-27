@@ -2,13 +2,13 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Sprout, Calculator, Leaf, Gift, Save } from 'lucide-react';
+import { Sprout, Calculator, Leaf, Gift, Save, Sparkles } from 'lucide-react';
 
 const navItems = [
   { href: '/', label: 'Planner', icon: Sprout },
   { href: '/calculator', label: 'Calculator', icon: Calculator },
   { href: '/plants', label: 'Plants', icon: Leaf },
-  { href: '/mutations', label: 'Mutations', icon: Leaf },
+  { href: '/mutations', label: 'Mutations', icon: Sparkles },
   { href: '/codes', label: 'Codes', icon: Gift },
   { href: '/plans', label: 'My Plans', icon: Save },
 ];
